@@ -1,29 +1,3 @@
-<?php
-$submitpressed = $_POST["submitpressed"] ?? null;
-$programstatus = $_POST["progstatus"] ?? "false";
-$codes = $_POST["custinput"];
-$file = nl2br(file_get_contents("scannedcodes.txt"));
-echo "User: " . exec("whoami") . "<br>";
-echo "Submit Pressed: " . htmlspecialchars($submitpressed) . "<br>";
-echo "Program Status: " . htmlspecialchars($programstatus) . "<br>";
-$descriptor_spec = [
-    0 => ["pipe", "r"],
-    1 => ["pipe", "w"],
-    2 => ["pipe", "w"],
-];
-proc_open("sudo ./mainprogram", $descriptor_spec, $pipes);
-exec("xdg-open scannedcodes.txt");
-if (!empty($codes)) {
-    $file = fopen("/var/www/html/knowncodes.txt", "w");
-    if ($file) {
-        fwrite($file, $codes);
-        fclose($file);
-        echo "Codes written to file.<br>";
-    } else {
-        echo "Failed to open file for writing.<br>";
-    }
-}
-?>
 <!DOCTYPE html>
 <html>
     <head>
